@@ -9,4 +9,6 @@ public enum UserStatusEnum {
     UserStatusEnum(int index){
         this.index = index;
     }
+    public static show(){
+    }
 }
