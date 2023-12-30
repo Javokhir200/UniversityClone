@@ -47,6 +47,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String changeUsername(Integer userId, String newUsername) {
+        for (User user :USERS){
+            if(user.getUserId().equals(userId)){
+                user.setUsername(newUsername);
+                return "U" + userId + "'s username changed successfully !!!";
+            }
+        }
+        return "U" + userId + " is not found !!!";
+    }
+
+    @Override
+    public String changePassword(Integer userId, String newPassword) {
+        for (User user :USERS){
+            if(user.getUserId().equals(userId)){
+                user.setPassword(newPassword);
+                return "U" + userId + "'s password changed successfully !!!";
+            }
+        }
+        return "U" + userId + " is not found !!!";
+    }
+
+    @Override
     public boolean isExist(String username) {
         for(User user:USERS){
             if(user.getUsername().equals(username)){

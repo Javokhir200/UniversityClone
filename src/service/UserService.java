@@ -14,4 +14,6 @@ public interface UserService{
     String delete(Integer userId);
     String changeStatus(Integer userId, UserStatusEnum newStatus);
     boolean isExist(String username);
+    String changeUsername(Integer userId,String newUsername);
+    String changePassword(Integer userId,String newPassword);
 }

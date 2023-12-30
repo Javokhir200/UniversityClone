@@ -22,16 +22,7 @@ public class User {
         this.password = password;
         this.username = username;
         this.status = status;
-    }
-
-    public User(String fullName, String password, String username, int facultyId, int groupId, UserStatusEnum status) {
-        this.fullName = fullName;
-        this.password = password;
-        this.username = username;
-        this.facultyId = facultyId;
-        this.groupId = groupId;
-        this.status = status;
-    }
+    }//user faqat guest bo'lib qo'shiladi rektor set qiladi teacher or student ekanini
 
     public void setUserId(int userId) {
         this.userId = userId;
