@@ -2,33 +2,43 @@ package domain;
 
 import enums.UserStatusEnum;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private int UserId;
+    int sequence = 0;
+    {
+        sequence++;
+    }
+    private int userId = sequence;
     private String fullName;
+    private String password;
+    private String username;
     private int facultyId;
     private int groupId;
     private UserStatusEnum status;
-    private int gpa;
-    private List<Grade> GRADES = new ArrayList<>();
 
-    public User(int userId, String fullName, int facultyId, int groupId, UserStatusEnum status, int gpa) {
-        UserId = userId;
+    public User(String fullName, String password, String username, UserStatusEnum status) {
         this.fullName = fullName;
+        this.password = password;
+        this.username = username;
+        this.status = status;
+    }
+
+    public User(String fullName, String password, String username, int facultyId, int groupId, UserStatusEnum status) {
+        this.fullName = fullName;
+        this.password = password;
+        this.username = username;
         this.facultyId = facultyId;
         this.groupId = groupId;
         this.status = status;
-        this.gpa = gpa;
     }
 
     public void setUserId(int userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
-    public int getUserId() {
-        return UserId;
+    public Integer getUserId() {
+        return userId;
     }
 
     public String getFullName() {
@@ -63,19 +73,32 @@ public class User {
         this.status = status;
     }
 
-    public int getGpa() {
-        return gpa;
+    public String getPassword() {
+        return password;
     }
 
-    public void setGpa(int gpa) {
-        this.gpa = gpa;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public List<Grade> getGRADES() {
-        return GRADES;
+    public String getUsername() {
+        return username;
     }
 
-    public void setGRADES(Grade grade) {
-        GRADES.add(grade);
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", fullName='" + fullName + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", facultyId=" + facultyId +
+                ", groupId=" + groupId +
+                ", status=" + status +
+                '}';
     }
 }

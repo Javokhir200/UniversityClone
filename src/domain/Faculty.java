@@ -4,7 +4,6 @@ public class Faculty {
     private int facultyId;
     private String facultyName;
     private int studentCount;
-    private int teacherCount;
 
     public Faculty(int facultyId, String facultyName) {
         this.facultyId = facultyId;
@@ -32,15 +31,7 @@ public class Faculty {
     }
 
     public void setStudentCount(int studentCount) {
-        this.studentCount = studentCount;
-    }
-
-    public int getTeacherCount() {
-        return teacherCount;
-    }
-
-    public void setTeacherCount(int teacherCount) {
-        this.teacherCount = teacherCount;
+        this.studentCount += studentCount;
     }
 
     @Override
@@ -49,7 +40,6 @@ public class Faculty {
                 "facultyId=" + facultyId +
                 ", facultyName='" + facultyName +
                 ", studentCount=" + studentCount +
-                ", teacherCount=" + teacherCount +
                 '}';
     }
 }
