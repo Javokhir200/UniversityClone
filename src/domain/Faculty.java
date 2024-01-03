@@ -1,11 +1,14 @@
 package domain;
 
 public class Faculty {
-    private int facultyId;
+    private int sequence =0;
+    {
+        sequence++;
+    }
+    private int facultyId = sequence;
     private String facultyName;
 
-    public Faculty(int facultyId, String facultyName) {
-        this.facultyId = facultyId;
+    public Faculty(String facultyName) {
         this.facultyName = facultyName;
     }
 
