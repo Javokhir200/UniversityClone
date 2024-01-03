@@ -12,4 +12,5 @@ public interface GroupService {
     String addSubject(Integer groupId, Integer subjectId);
     String removeSubject(Integer groupId,Integer subjectId);
     void showSubjects(Integer groupId);
+    void showAllGroups();
 }

@@ -36,4 +36,11 @@ public class GroupServiceImpl implements GroupService {
     public void showSubjects(Integer groupId) {
         subjectService.showSubjectsByGroupId(groupId);
     }
+
+    @Override
+    public void showAllGroups() {
+        for (Group group : GROUPS) {
+            System.out.println(group);
+        }
+    }
 }

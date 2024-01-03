@@ -13,13 +13,17 @@ public enum UserStatusEnum {
         return index;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
     public static void show(){
         for(UserStatusEnum status:UserStatusEnum.values()){
             System.out.println(status.getIndex() + ") " + status);
         }
+    }
+    public static UserStatusEnum setStatusByIndex(int index) {
+        for (UserStatusEnum use : UserStatusEnum.values()) {
+            if(index == use.getIndex()) {
+                return use;
+            }
+        }
+        return GUEST;
     }
 }

@@ -9,4 +9,5 @@ public interface FacultyService {
     Set<Faculty> FACULTIES = new LinkedHashSet<>();
     String addFaculty(Faculty faculty);
     String removeFaculty(Integer facultyId);
+    void show();
 }
