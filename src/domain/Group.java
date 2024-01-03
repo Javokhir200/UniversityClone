@@ -9,11 +9,29 @@ public class Group {
         sequence++;
     }
     private int groupId = sequence;
+    private int facultyId;
     private String name;
-    private Set <String> subjects = new LinkedHashSet<>();
+    private Set <String> SUBJECTS = new LinkedHashSet<>();
 
-    public Group(String name) {
+    public Group(int facultyId, String name) {
+        this.facultyId = facultyId;
         this.name = name;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(int facultyId) {
+        this.facultyId = facultyId;
     }
 
     public String getName() {
@@ -24,20 +42,12 @@ public class Group {
         this.name = name;
     }
 
-    public Set<String> getSubjects() {
-        return subjects;
+    public Set<String> getSUBJECTS() {
+        return SUBJECTS;
     }
 
-    public void setSubjects(Set<String> subjects) {
-        this.subjects = subjects;
+    public void setSUBJECTS(Set<String> SUBJECTS) {
+        this.SUBJECTS = SUBJECTS;
     }
 
-    @Override
-    public String toString() {
-        return "Group{" +
-                "groupId=" + groupId +
-                ", name='" + name + '\'' +
-                ", subjects=" + subjects +
-                '}';
-    }
 }

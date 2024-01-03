@@ -3,14 +3,13 @@ package domain;
 public class Faculty {
     private int facultyId;
     private String facultyName;
-    private int studentCount;
 
     public Faculty(int facultyId, String facultyName) {
         this.facultyId = facultyId;
         this.facultyName = facultyName;
     }
 
-    public int getFacultyId() {
+    public Integer getFacultyId() {
         return facultyId;
     }
 
@@ -26,20 +25,11 @@ public class Faculty {
         this.facultyName = facultyName;
     }
 
-    public int getStudentCount() {
-        return studentCount;
-    }
-
-    public void setStudentCount(int studentCount) {
-        this.studentCount += studentCount;
-    }
-
     @Override
     public String toString() {
         return "Faculty{" +
                 "facultyId=" + facultyId +
                 ", facultyName='" + facultyName +
-                ", studentCount=" + studentCount +
                 '}';
     }
 }

@@ -1,8 +1,15 @@
 package service;
 
-public interface GroupService {
+import domain.Group;
 
-    //add
-    //delete
-    //addSubjectToGroup(Integer groupId,Integer subjectId) subjectId orqali subjectname olib keladigan method yozish kk implementatsiyaga
+import java.util.ArrayList;
+import java.util.List;
+
+public interface GroupService {
+    List<Group> GROUPS = new ArrayList<>();
+    String addGroup(Group group);
+    String deleteGroup(Integer groupId);
+    String addSubject(Integer groupId, Integer subjectId);
+    String removeSubject(Integer groupId,Integer subjectId);
+    void showSubjects(Integer groupId);
 }

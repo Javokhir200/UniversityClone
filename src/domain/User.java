@@ -88,7 +88,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
                 ", facultyId=" + facultyId +
-                ", groupId=" + groupId +
+                ", groupId= G" + groupId +
                 ", status=" + status +
                 '}';
     }
