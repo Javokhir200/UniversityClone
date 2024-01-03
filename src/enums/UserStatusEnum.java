@@ -2,9 +2,8 @@ package enums;
 
 public enum UserStatusEnum {
     REKTOR(1),
-    TEACHER(2),
-    STUDENT(3),
-    GUEST(4);
+    STUDENT(2),
+    GUEST(3);
     private int index;
     UserStatusEnum(int index){
         this.index = index;
