@@ -16,10 +16,6 @@ public class Faculty {
         return facultyId;
     }
 
-    public void setFacultyId(int facultyId) {
-        this.facultyId = facultyId;
-    }
-
     public String getFacultyName() {
         return facultyName;
     }

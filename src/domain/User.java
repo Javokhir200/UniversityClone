@@ -11,16 +11,13 @@ public class User {
     }
     private int userId = sequence;
     private String fullName;
-    private String password;
-    private String username;
-    private int facultyId;
+    private String email;
     private int groupId;
     private UserStatusEnum status;
 
-    public User(String fullName, String password, String username, UserStatusEnum status) {
+    public User(String fullName, String email, String username, UserStatusEnum status) {
         this.fullName = fullName;
-        this.password = password;
-        this.username = username;
+        this.email = email;
         this.status = status;
     }//user faqat guest bo'lib qo'shiladi rektor set qiladi teacher or student ekanini
 
@@ -40,14 +37,6 @@ public class User {
         this.fullName = fullName;
     }
 
-    public int getFacultyId() {
-        return facultyId;
-    }
-
-    public void setFacultyId(int facultyId) {
-        this.facultyId = facultyId;
-    }
-
     public int getGroupId() {
         return groupId;
     }
@@ -64,20 +53,12 @@ public class User {
         this.status = status;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -85,10 +66,8 @@ public class User {
         return "User{" +
                 "userId=" + userId +
                 ", fullName='" + fullName + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", facultyId=" + facultyId +
-                ", groupId= G" + groupId +
+                ", email='" + email + '\'' +
+                ", groupId=" + groupId +
                 ", status=" + status +
                 '}';
     }

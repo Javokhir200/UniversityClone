@@ -20,8 +20,14 @@ public class FacultyServiceImpl implements FacultyService {
         }
         return "Faculty is not exist in " + facultyId;
     }
+
     @Override
-    public void show(){
+    public Faculty getFacultyById(Integer facultyId) {
+        return null;
+    }
+
+    @Override
+    public void showAllFaculties(){
         for (Faculty faculty:FACULTIES){
             System.out.println(faculty.toString());
         }

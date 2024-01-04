@@ -9,6 +9,5 @@ public interface SubjectService {
     Set<Subject> SUBJECTS = new LinkedHashSet<>();
     String addSubject(Subject subject);
     String removeSubject(Integer subjectId);
-    String removeSubjectFromGroupById(Integer groupId,Integer subjectId);
-    String addSubjectFromGroupById(Integer groupId,Integer subjectId);
+    Subject getSubjectById(Integer subjectId);
 }

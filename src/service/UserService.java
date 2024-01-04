@@ -3,17 +3,15 @@ package service;
 import domain.User;
 import enums.UserStatusEnum;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public interface UserService{
-    Set<User> USERS = new LinkedHashSet<>();
+    Map<User,Integer> USERS = new HashMap<>();
 
-    User register(User user);
-    User login(String password, String username);
+    User register(User user,String password);
+    User login(String email, String password);
     String delete(Integer userId);
     String changeStatus(Integer userId, UserStatusEnum newStatus);
-    String changeUsername(Integer userId,String newUsername);
-    String changePassword(Integer userId,String newPassword);
+    String changeEmail(Integer userId,String newEmail);
     void showAllUsers();
 }

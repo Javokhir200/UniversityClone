@@ -9,8 +9,6 @@ public interface GroupService {
     List<Group> GROUPS = new ArrayList<>();
     String addGroup(Group group);
     String deleteGroup(Integer groupId);
-    String addSubject(Integer groupId, Integer subjectId);
-    String removeSubject(Integer groupId,Integer subjectId);
-    void showSubjects(Integer groupId);
+    Group getGroupById(Integer groupId);
     void showAllGroups();
 }

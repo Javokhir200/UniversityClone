@@ -23,18 +23,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public String addSubject(Integer groupId, Integer subjectId) {
-        return subjectService.addSubjectFromGroupById(groupId, subjectId);
-    }
-
-    @Override
-    public String removeSubject(Integer groupId, Integer subjectId) {
-        return subjectService.removeSubjectFromGroupById(groupId,subjectId);
-    }
-
-    @Override
-    public void showSubjects(Integer groupId) {
-        subjectService.showSubjectsByGroupId(groupId);
+    public Group getGroupById(Integer groupId) {
+        return null;
     }
 
     @Override
