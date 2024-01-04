@@ -75,11 +75,9 @@ public class Main {
             if (put == 0) break;
             switch (put) {
                 case 1 -> {
-                    System.out.print("Enter id faculty :");
-                    int id = scNum.nextInt();
                     System.out.print("Enter name faculty :");
                     String name = scStr.nextLine();
-                    Faculty faculty = new Faculty(id, name);
+                    Faculty faculty = new Faculty(name);
                     facultyService.addFaculty(faculty);
                 }
                 case 2 -> {
