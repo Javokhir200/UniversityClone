@@ -4,6 +4,8 @@ import domain.User;
 import enums.UserStatusEnum;
 import service.UserService;
 
+import java.util.Properties;
+
 public class UserServiceImpl implements UserService {
     @Override
     public User register(User user, String password) {
@@ -33,7 +35,12 @@ public class UserServiceImpl implements UserService {
     }
 
     public static Integer isOwnerOfEmail(String email) {
-        return null;//o'zim yozib chiqaman bu yerini
+        /*Properties properties = new Properties();
+        properties.put("mail.smtp.host","smtp.gmail.com");
+        properties.put("mail.smtp.port","465");
+        properties.put("mail.smtp.ssl.enable","true");
+        properties.put("mail.smtp.auth","true");*/
+        return 1111;//hozricha
     }
 
     @Override

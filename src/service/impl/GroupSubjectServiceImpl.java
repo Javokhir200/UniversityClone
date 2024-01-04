@@ -14,7 +14,7 @@ public class GroupSubjectServiceImpl implements GroupSubjectService {
     }
 
     @Override
-    public void showAllSubjectsByGroupId(Integer groupId) {
+    public void showSubjectsByGroupId(Integer groupId) {
 
     }
 }
