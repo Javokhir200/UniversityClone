@@ -206,9 +206,10 @@ public class Main {
     private static void printRegisterMenu() {
         System.out.println("""
                 |--- Register/Login Menu ---|
-                                
+                             
                 1.Register
                 2.Login
+                
                 0.Exit
                 |---------------------------|
                 """);

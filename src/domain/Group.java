@@ -1,8 +1,5 @@
 package domain;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 public class Group {
     private  int sequence = 0;
     {

@@ -30,6 +30,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Subject getSubjectById(Integer subjectId) {
+        for (Subject subject:SUBJECTS){
+            if(subjectId.equals(subject.getSubjectId())){
+                return subject;
+            }
+        }
         return null;
     }
 

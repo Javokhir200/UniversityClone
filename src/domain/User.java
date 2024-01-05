@@ -12,6 +12,8 @@ public class User {
     private int userId = sequence;
     private String fullName;
     private String email;
+    private String username;
+    private String localPassword;
     private int groupId;
     private UserStatusEnum status;
 
@@ -61,12 +63,30 @@ public class User {
         this.email = email;
     }
 
+    public String getLocalPassword() {
+        return localPassword;
+    }
+
+    public void setLocalPassword(String localPassword) {
+        this.localPassword = localPassword;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + localPassword + '\'' +
                 ", groupId=" + groupId +
                 ", status=" + status +
                 '}';
