@@ -6,6 +6,11 @@ import service.SubjectService;
 import java.util.Set;
 
 public class SubjectServiceImpl implements SubjectService {
+    static {
+        SUBJECTS.add(new Subject("Math"));
+        SUBJECTS.add(new Subject("Physics"));
+        SUBJECTS.add(new Subject("Biology"));
+    }
     @Override
     public String addSubject(Subject subject) {
         for (Subject sub:SUBJECTS){
@@ -21,7 +26,7 @@ public class SubjectServiceImpl implements SubjectService {
     public String removeSubject(Integer subjectId) {
         for (Subject subject:SUBJECTS){
             if(subject.getSubjectId().equals(subjectId)){
-                SUBJECTS.remove(subjectId);
+                SUBJECTS.remove(subject);
                 return "Subject removed successfully !!!";
             }
         }
@@ -38,12 +43,12 @@ public class SubjectServiceImpl implements SubjectService {
         return null;
     }
 
-    public static void showSubjects(){
+    @Override
+    public void showSubjects() {
         System.out.println("=====Subjects=====");
         for (Subject subject:SUBJECTS){
             System.out.println(subject.toString());
         }
         System.out.println("==================");
     }
-
 }

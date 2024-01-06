@@ -1,7 +1,7 @@
 package domain;
 
 public class GroupSubject {
-    private int sequence = 0;
+    private static int sequence = 0;
     {
         sequence++;
     }
@@ -14,7 +14,7 @@ public class GroupSubject {
         this.subjectId = subjectId;
     }
 
-    public int getGrSubId() {
+    public Integer getGrSubId() {
         return grSubId;
     }
 
@@ -22,7 +22,7 @@ public class GroupSubject {
         this.grSubId = grSubId;
     }
 
-    public int getGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
@@ -30,7 +30,7 @@ public class GroupSubject {
         this.groupId = groupId;
     }
 
-    public int getSubjectId() {
+    public Integer getSubjectId() {
         return subjectId;
     }
 

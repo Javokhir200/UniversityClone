@@ -10,4 +10,5 @@ public interface SubjectService {
     String addSubject(Subject subject);
     String removeSubject(Integer subjectId);
     Subject getSubjectById(Integer subjectId);
+    void showSubjects();
 }

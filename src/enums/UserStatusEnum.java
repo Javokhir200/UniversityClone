@@ -10,7 +10,7 @@ public enum UserStatusEnum {
         this.index = index;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -20,12 +20,12 @@ public enum UserStatusEnum {
         }
     }
 
-    public static UserStatusEnum setStatusByIndex(int index) {
+    public static UserStatusEnum getStatusByIndex(int index) {
         for (UserStatusEnum use : UserStatusEnum.values()) {
             if (index == use.getIndex()) {
                 return use;
             }
         }
-        return GUEST;
+        return null;
     }
 }
