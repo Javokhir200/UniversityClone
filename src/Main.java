@@ -228,7 +228,7 @@ public class Main {
                     } catch (InterruptedException e) {
                         System.out.println("There is not a huge problem !!!");
                     }
-                }case 13->{
+                }case 13-> {
                     System.out.print("Enter the new username: ");
                     String username = scStr.nextLine();
                     System.out.println(userService.changeUsername(rektor.getUserId(), username));
