@@ -1,234 +1,411 @@
 import domain.Faculty;
 import domain.Group;
+import domain.Subject;
 import domain.User;
 import enums.UserStatusEnum;
-import service.FacultyService;
 import service.GroupService;
+import service.GroupSubjectService;
 import service.SubjectService;
 import service.UserService;
-import service.impl.FacultyServiceImpl;
-import service.impl.GroupServiceImpl;
-import service.impl.SubjectServiceImpl;
-import service.impl.UserServiceImpl;
+import service.impl.*;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
     static Scanner scNum = new Scanner(System.in);
     static Scanner scStr = new Scanner(System.in);
-    static FacultyService facultyService = new FacultyServiceImpl();
-    static GroupService groupService = new GroupServiceImpl();
-    static SubjectService subjectService = new SubjectServiceImpl();
     static UserService userService = new UserServiceImpl();
+    static SubjectService subjectService = new SubjectServiceImpl();
+    static FacultyServiceImpl facultyService = new FacultyServiceImpl();
+    static GroupService groupService = new GroupServiceImpl();
+    static GroupSubjectService groupSubjectService = new GroupSubjectServiceImpl();
 
     public static void main(String[] args) {
-        printWelcome();
-        while (true) {
-            printRegisterMenu();
-            System.out.print("What you gonna do : ");
-            int put = scNum.nextInt();
-            if (put == 0) break;
-            switch (put) {
-                case 1 -> {
-                    System.out.print("Enter your full name: ");
-                    String name = scStr.nextLine();
-                    System.out.print("Create a password: ");
-                    String password = scStr.nextLine();
-                    System.out.print("Enter a new username: ");
-                    String userName = scStr.nextLine();
-                    User user = new User(name, password, userName, UserStatusEnum.GUEST);
-                    var register = userService.register(user);
-                    if (register != null) {
-                        System.out.println("Succesfuelly !");
-                        printGuestMenu();
-                    }
-                    System.out.println("Something went wrong, Try again !");
+        welcome();
+        boolean onProcess = true;
+        while (onProcess) {
+            showRegMenu();
+            System.out.print("Enter the number: ");
+            int regNum = scNum.nextInt();
+            User loggedUser = null;
+            switch (regNum) {
+                case 0 -> {
+                    onProcess = false;
                 }
-                case 2 -> {
-                    System.out.print("Enter your username : ");
+                case 1 -> {
+                    System.out.print("Enter fullname: ");
+                    String fullname = scStr.nextLine();
+                    System.out.print("Enter strength password: ");
+                    String password = scStr.nextLine();
+                    System.out.print("Enter your username: ");
                     String username = scStr.nextLine();
-                    System.out.print("Enter your password : ");
-                    String password = scStr.nextLine();
-                    var login = userService.login(password, username);
-                    if (login != null && login.getStatus().equals(UserStatusEnum.REKTOR)) {
-                        System.out.println("Succesfuelly !");
-                        printRectorMenu(login);
-                    } else if (login != null && login.getStatus().equals(UserStatusEnum.STUDENT)) {
-                        System.out.println("Succesfuelly !");
-                        printStudentMenu(login);
-                    } else if (login != null && login.getStatus().equals(UserStatusEnum.GUEST)) {
-                        System.out.println("Succesfuelly !");
-                        printGuestMenu();
+                    if (userService.isValidUsername(username)) {
+                        System.out.print("Enter your email: ");
+                        String email = scStr.nextLine();
+                        if (userService.isValidEmail(email)) {
+                            System.out.println("We delivered confirmation code to your email.Check you email !!!");
+                            String pass = userService.confirmationByEmail(email);
+                            boolean confirm = true;
+                            while (confirm) {
+                                System.out.print("Enter confirmation code(4 digits or enter ../ to exit: ");
+                                String conCode = scStr.nextLine();
+                                if (pass.equals(conCode)) {
+                                    loggedUser = userService.register(new User(fullname, email, username,password, UserStatusEnum.GUEST));
+                                    System.out.println("You successfully entered !!!");
+                                    confirm = false;
+                                } else if (conCode.equals("../")) {
+                                    confirm = false;
+                                }
+                            }
+                            if (Objects.isNull(loggedUser)) {
+                                System.out.println("You missed enter smth at registration !!!");
+                            } else {
+                                GuestMenu(loggedUser);
+                            }
+                        } else {
+                            System.out.println("This email already registered !!!");
+                        }
+                    } else {
+                        System.out.println("This username already taken !!!");
                     }
-                    System.out.println("Something went wrong, Try again !");
-                }
-                default -> System.out.println("Enter a numbers that given in menu.");
-            }
-        }
-    }
-
-    private static void printRectorMenu(User rector) {
-        while (true) {
-            printRectorUses();
-            System.out.print("What you gonna do :");
-            int put = scNum.nextInt();
-            if (put == 0) break;
-            switch (put) {
-                case 1 -> {
-                    System.out.print("Enter name faculty :");
-                    String name = scStr.nextLine();
-                    Faculty faculty = new Faculty(name);
-                    facultyService.addFaculty(faculty);
                 }
                 case 2 -> {
-                    facultyService.show();
-                    System.out.print("Enter an id faculty to delete :");
-                    int id = scNum.nextInt();
-                    facultyService.removeFaculty(id);
+                    System.out.print("Enter your username: ");
+                    String username = scStr.nextLine();
+                    System.out.print("Enter your password: ");
+                    String password = scStr.nextLine();
+                    loggedUser = userService.login(username, password);
+                    findStatus(loggedUser);
                 }
                 case 3 -> {
-                    facultyService.show();
-                    System.out.print("Enter a faculty id :");
-                    int id = scNum.nextInt();
-                    System.out.print("Enter a group name :");
-                    String name = scStr.nextLine();
-                    Group group = new Group(id, name);
-                    groupService.addGroup(group);
-                }
-                case 4 -> {
-                    groupService.showAllGroups();
-                    System.out.print("Enter an id group to delete :");
-                    int id = scNum.nextInt();
-                    groupService.deleteGroup(id);
-                }
-                case 5 -> {
-                    System.out.print("Enter a new username :");
-                    String username = scStr.nextLine();
-                    userService.changeUsername(rector.getUserId(), username);
-                }
-                case 6 -> {
-                    System.out.print("Enter new password :");
-                    String password = scStr.nextLine();
-                    userService.changePassword(rector.getUserId(), password);
-                }
-                case 7 -> {
-                    userService.showAllUsers();
-                    System.out.print("Enter an id user to change status :");
-                    int id = scNum.nextInt();
-                    UserStatusEnum.show();
-                    System.out.print("Enter an index to set status :");
-                    int index = scNum.nextInt();
-                    userService.changeStatus(id, UserStatusEnum.setStatusByIndex(index));
+                    System.out.print("Enter your email: ");
+                    String email = scStr.nextLine();
+                    if (userService.isValidEmail(email)) {
+                        userService.confirmationByEmail(email);
+                        System.out.println("We delivered confirmation code to your email.Check your email !!!");
+                        String pass = userService.confirmationByEmail(email);
+                        boolean confirm = true;
+                        int chance = 5;
+                        while (confirm) {
+                            System.out.print("Enter confirmation code(4 digits or enter ../ to exit");
+                            String conCode = scStr.nextLine();
+                            if (pass.equals(conCode)) {
+                                loggedUser = userService.login(email);
+                                System.out.println("You successfully entered !!!");
+                                confirm = false;
+                            } else if (conCode.equals("../")) {
+                                confirm = false;
+                            }
+                        }
+                        findStatus(loggedUser);
+                    } else {
+                        System.out.println("This email is not registered !!!");
+                    }
                 }
             }
         }
     }
 
-    private static void printRectorUses() {
-        System.out.println("""
-                |--- Rector Menu ---|
-                                
-                1.Create faculty
-                2.Delete faculty
-                3.Create group
-                4.Delete group
-                5.Change username
-                6.Change password
-                7.Change User status
-                                
-                0.Back to register menu
-                |------------------|
-                """);
-    }
-
-    private static void printStudentMenu(User student) {
-        while (true) {
-            printStudentUses();
-            System.out.print("What you gonna do: ");
-            int put = scNum.nextInt();
-            if (put == 0) break;
-            switch (put) {
+    private static void RektorMenu(User rektor) {
+        boolean onProcess = true;
+        while (onProcess) {
+            showRektorMenu();
+            System.out.print("Enter the number: ");
+            int rekMenuNum = scNum.nextInt();
+            switch (rekMenuNum) {
+                case 0 -> {
+                    onProcess = false;
+                }
                 case 1 -> {
-                    System.out.println("Enter a new username : ");
-                    String username = scStr.nextLine();
-                    userService.changeUsername(student.getUserId(), username);
+                    System.out.print("Enter the name of faculty: ");
+                    String facultyName = scStr.nextLine();
+                    System.out.println(facultyService.addFaculty(new Faculty(facultyName)));
                 }
                 case 2 -> {
-                    System.out.print("Enter a new password : ");
-                    String password = scStr.nextLine();
-                    userService.changePassword(student.getUserId(), password);
+                    facultyService.showAllFaculties();
+                    System.out.print("Enter the id of faculty: ");
+                    int facultyId = scNum.nextInt();
+                    System.out.println(facultyService.removeFaculty(facultyId));
                 }
-                case 3 -> groupService.showSubjects(student.getGroupId());
-                default -> System.out.println("Enter a numbers that given in menu.");
+                case 3 -> {
+                    facultyService.showAllFaculties();
+                }case 4->{
+                    facultyService.showAllFaculties();
+                    System.out.print("Enter the id of faculty: ");
+                    int facultyId = scNum.nextInt();
+                    if (Objects.isNull(facultyService.getFacultyById(facultyId))){
+                        System.out.println("This faculty is not exist !!!");
+                    }else{
+                        System.out.print("Enter group name: ");
+                        String groupName = scStr.nextLine();
+                        System.out.println(groupService.addGroup(new Group(facultyId, groupName)));
+                    }
+                }case 5->{
+                    facultyService.showAllFaculties();
+                    System.out.print("Enter the id of faculty: ");
+                    int faculty = scNum.nextInt();
+                    if (Objects.isNull(facultyService.getFacultyById(faculty))){
+                        System.out.println("This faculty is not exist !!!");
+                    }else{
+                        groupService.showAllGroupsByFacultyId(faculty);
+                        System.out.print("Enter group id: ");
+                        int groupId = scNum.nextInt();
+                        System.out.println(groupService.deleteGroup(faculty, groupId));
+                    }
+                }case 6->{
+                    facultyService.showAllFaculties();
+                    System.out.print("Enter the id of faculty: ");
+                    int faculty = scNum.nextInt();
+                    groupService.showAllGroupsByFacultyId(faculty);
+                }case 7->{
+                    facultyService.showAllFaculties();
+                    System.out.print("Enter the id of faculty: ");
+                    int faculty = scNum.nextInt();
+                    groupService.showAllGroupsByFacultyId(faculty);
+                    System.out.print("Enter the id of group: ");
+                    int groupId = scNum.nextInt();
+                    subjectService.showSubjects();
+                    System.out.print("Enter the id of subject: ");
+                    int subId = scNum.nextInt();
+                    System.out.println(groupSubjectService.addSubjectToGroup(groupId, subId));
+                }case 8->{
+                    facultyService.showAllFaculties();
+                    System.out.print("Enter the id of faculty: ");
+                    int faculty = scNum.nextInt();
+                    groupService.showAllGroupsByFacultyId(faculty);
+                    System.out.print("Enter the id of group: ");
+                    int groupId = scNum.nextInt();
+                    groupSubjectService.showSubjectsByGroupId(groupId);
+                    System.out.print("Enter the id of subject: ");
+                    int subId = scNum.nextInt();
+                    System.out.println(groupSubjectService.removeSubjectFromGroup(groupId, subId));
+                }case 9->{
+                    userService.showAllUsers();
+                    System.out.print("Enter the id of user: ");
+                    int userId = scNum.nextInt();
+                    System.out.println(userService.delete(userId));
+                }case 10->{
+                    userService.showAllUsers();
+                    System.out.print("Enter the id of user: ");
+                    int userId = scNum.nextInt();
+                    UserStatusEnum.show();
+                    System.out.print("Enter the id of status: ");
+                    int statusId= scNum.nextInt();
+                    if (statusId == UserStatusEnum.STUDENT.getIndex()){
+                        facultyService.showAllFaculties();
+                        System.out.print("Enter the id of faculty: ");
+                        int facultyId = scNum.nextInt();
+                        groupService.showAllGroupsByFacultyId(facultyId);
+                        System.out.print("Enter the id of faculty: ");
+                        int groupId = scNum.nextInt();
+                    System.out.println(userService.changeStatus(userId,UserStatusEnum.getStatusByIndex(statusId),facultyId,groupId));
+
+                    }
+                }case 11->{
+                    System.out.print("Enter the new password: ");
+                    String newPass = scStr.nextLine();
+                    System.out.println(userService.changePassword(rektor.getUserId(), newPass));
+                }case 12->{
+                    System.out.print("Enter the new email: ");
+                    String newEmail = scStr.nextLine();
+                    System.out.println("We have sent code to your email !!!");
+                    String pass = userService.confirmationByEmail(newEmail);
+                    try {
+                        Thread.sleep(3000);
+                        int chance = 5;
+                        boolean isNotConfirmed = true;
+                        while (chance>0 && isNotConfirmed){
+                            System.out.print("Enter the code we have sent: ");
+                            String code = scStr.nextLine();
+                            if (pass.equals(code)){
+                                System.out.println(userService.changeEmail(rektor.getUserId(), newEmail));
+                                isNotConfirmed = false;
+                            }else{
+                                System.out.println("Incorrect code !!!\nYou have " + (--chance) + " chances !!!");
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        System.out.println("There is not a huge problem !!!");
+                    }
+                }case 13->{
+                    System.out.print("Enter the new username: ");
+                    String username = scStr.nextLine();
+                    System.out.println(userService.changeUsername(rektor.getUserId(), username));
+                }case 14->{
+                    userService.showAllUsers();
+                }
+                case 15->{
+                    System.out.print("Enter the new Subject: ");
+                    String username = scStr.nextLine();
+                    System.out.println(subjectService.addSubject(new Subject(username)));
+                }case 16->{
+                    subjectService.showSubjects();
+                    System.out.print("Enter the id of subject: ");
+                    int num = scNum.nextInt();
+                    System.out.println(subjectService.removeSubject(num));
+                }
+                default -> {
+                    System.out.println("Enter the number 0 to 13 !!!");
+                }
             }
         }
     }
 
-    private static void printStudentUses() {
+    private static void showRektorMenu() {
         System.out.println("""
-                |--- Student Menu ---|
-                                
-                1.Change username
-                2.Change password
-                3.Show subjects
-                                
-                0.Back to register menu
-                |-------------------|
+                |==========================================| Rektor Menu |=============================================|
+                |------------------------------------------------------------------------------------------------------|
+                |==| Faculty Settings |==|  Group Settings  |==|    User Settings   |==|      Subject Settings      |==|
+                |------------------------------------------------------------------------------------------------------|
+                |==| 1.Add Faculty    |==| 4.Add group      |==|  9.Delete user     |==| 15.Add Subject to List      ==|
+                |==| 2.Remove Faculty |==| 5.Remove group   |==| 10.Change Status   |==| 16.Remove Subject from List ==|
+                |==| 3.Show Faculties |==| 6.Show groups    |==| 11.Change password |==================================|
+                |========================| 7.Add subject    |==| 12.Change email    |==================================|
+                |========================| 8.Remove subject |==| 13.Change username |==================================|
+                |==============================================| 14.Show users      |==================================|
+                |------------------------------------------------------------------------------------------------------|
+                |=========================================|      0.Exit      |=========================================|
+                |------------------------------------------------------------------------------------------------------|
                 """);
     }
 
-    private static void printGuestMenu() {
-        while (true) {
-            printGuestUses();
-            System.out.print("What you gonna do :");
-            int put = scNum.nextInt();
-            if (put == 0) break;
-            switch (put) {
-                case 1 -> facultyService.show();
-                case 2 -> groupService.showAllGroups();
-                default -> System.out.println("Enter a number that given in menu.");
+    private static void StudentMenu(User student) {
+        boolean onProcess = true;
+        while (onProcess) {
+            showStudentMenu();
+            System.out.print("Enter the number: ");
+            int studentMenuNum = scNum.nextInt();
+            switch (studentMenuNum) {
+                case 0 -> {
+                    onProcess = false;
+                }case 1->{
+                    groupSubjectService.showSubjectsByGroupId(student.getGroupId());
+                }case 2->{
+                    System.out.print("Enter the new email: ");
+                    String newEmail = scStr.nextLine();
+                    System.out.println("We have sent code to your email !!!");
+                    String pass = userService.confirmationByEmail(newEmail);
+                    try {
+                        Thread.sleep(3000);
+                        int chance = 5;
+                        boolean isNotConfirmed = true;
+                        while (chance>0 && isNotConfirmed){
+                            System.out.print("Enter the code we have sent: ");
+                            String code = scStr.nextLine();
+                            if (pass.equals(code)){
+                                System.out.println(userService.changeEmail(student.getUserId(), newEmail));
+                                isNotConfirmed = false;
+                            }else{
+                                System.out.println("Incorrect code !!!\nYou have " + (--chance) + " chances !!!");
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        System.out.println("There is not a huge problem !!!");
+                    }
+                }case 3->{
+                    System.out.print("Enter the new username: ");
+                    String username = scStr.nextLine();
+                    System.out.println(userService.changeUsername(student.getUserId(), username));
+                }case 4->{
+                    System.out.print("Enter new password: ");
+                    String newPassword = scStr.nextLine();
+                    System.out.println(userService.changePassword(student.getUserId(), newPassword));
+                }case 5->{
+                    System.out.println(student.toString());
+                }case 6->{
+                    System.out.print("Enter your username: ");
+                    String username = scStr.nextLine();
+                    System.out.print("Enter your password: ");
+                    String pass = scStr.nextLine();
+                    System.out.println(userService.delete(username, pass));
+                    onProcess = false;
+                }default -> {
+                    System.out.println("Enter the number 0 to 6 !!!");
+                }
             }
         }
     }
 
-    private static void printGuestUses() {
+    private static void showStudentMenu() {
         System.out.println("""
-                |--- Guest Menu ---|
-                                
-                1.Show faculties
-                2.Show groups
-                                
-                0.Back to register menu.
-                |------------------|
-                """);
-    }
-
-    private static void printRegisterMenu() {
-        System.out.println("""
-                |--- Register/Login Menu ---|
-                             
-                1.Register
-                2.Login
-                
+                ---| Student Menu |---
+                1.Show Subjects
+                2.Change email
+                3.Change username
+                4.Change password
+                5.Show account info
+                6.Delete account
+                ----------------------
                 0.Exit
-                |---------------------------|
+                ----------------------
                 """);
     }
 
-    private static void printWelcome() {
+    private static void GuestMenu(User guest) {
+        boolean onProcess = true;
+        while (onProcess) {
+            showGuestMenu();
+            System.out.print("Enter the number: ");
+            int guestMenuNum = scNum.nextInt();
+            switch (guestMenuNum) {
+                case 0 -> {
+                    onProcess = false;
+                }
+                case 1 -> {
+                    System.out.println("Lorem ipsum dolor sit amet, consectetur adipisicing elit. " +
+                            "Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo " +
+                            "reprehenderit optio amet ab temporibus asperiores quasi cupiditate." +
+                            " Voluptatum ducimus voluptates voluptas?");
+                }case 2->{
+                    System.out.println("Currently not available !!!");
+                }
+            }
+        }
+    }
+
+    private static void showGuestMenu() {
         System.out.println("""
-                ░██╗░░░░░░░██╗███████╗██╗░░░░░░█████╗░░█████╗░███╗░░░███╗███████╗  ████████╗░█████╗░  ░█████╗░██╗░░░██╗██████╗░
-                ░██║░░██╗░░██║██╔════╝██║░░░░░██╔══██╗██╔══██╗████╗░████║██╔════╝  ╚══██╔══╝██╔══██╗  ██╔══██╗██║░░░██║██╔══██╗
-                ░╚██╗████╗██╔╝█████╗░░██║░░░░░██║░░╚═╝██║░░██║██╔████╔██║█████╗░░  ░░░██║░░░██║░░██║  ██║░░██║██║░░░██║██████╔╝
-                ░░████╔═████║░██╔══╝░░██║░░░░░██║░░██╗██║░░██║██║╚██╔╝██║██╔══╝░░  ░░░██║░░░██║░░██║  ██║░░██║██║░░░██║██╔══██╗
-                ░░╚██╔╝░╚██╔╝░███████╗███████╗╚█████╔╝╚█████╔╝██║░╚═╝░██║███████╗  ░░░██║░░░╚█████╔╝  ╚█████╔╝╚██████╔╝██║░░██║
-                ░░░╚═╝░░░╚═╝░░╚══════╝╚══════╝░╚════╝░░╚════╝░╚═╝░░░░░╚═╝╚══════╝  ░░░╚═╝░░░░╚════╝░  ░╚════╝░░╚═════╝░╚═╝░░╚═╝
-                                              
-                ██╗░░░██╗███╗░░██╗██╗██╗░░░██╗███████╗██████╗░░██████╗██╗████████╗██╗░░░██╗
-                ██║░░░██║████╗░██║██║██║░░░██║██╔════╝██╔══██╗██╔════╝██║╚══██╔══╝╚██╗░██╔╝
-                ██║░░░██║██╔██╗██║██║╚██╗░██╔╝█████╗░░██████╔╝╚█████╗░██║░░░██║░░░░╚████╔╝░
-                ██║░░░██║██║╚████║██║░╚████╔╝░██╔══╝░░██╔══██╗░╚═══██╗██║░░░██║░░░░░╚██╔╝░░
-                ╚██████╔╝██║░╚███║██║░░╚██╔╝░░███████╗██║░░██║██████╔╝██║░░░██║░░░░░░██║░░░
-                ░╚═════╝░╚═╝░░╚══╝╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝╚═════╝░╚═╝░░░╚═╝░░░░░░╚═╝░░░""");
+                ---------| Guest Menu |-----------
+                1.Information about our University
+                2.Connect to us
+                                
+                0.Exit
+                ----------------------------------
+                """);
+    }
+
+    private static void findStatus(User loggedUser) {
+        if (Objects.isNull(loggedUser)) {
+            System.out.println("This user is not exist !!!");
+        } else {
+            switch (loggedUser.getStatus()) {
+                case GUEST -> {
+                    GuestMenu(loggedUser);
+                }
+                case STUDENT -> {
+                    StudentMenu(loggedUser);
+                }
+                case REKTOR -> {
+                    RektorMenu(loggedUser);
+                }
+            }
+        }
+    }
+
+    private static void showRegMenu() {
+        System.out.println("""
+                ======Menu======
+                1.Registration
+                2.Login
+                3.I can't memorize my password
+                                
+                0.Exit
+                ================
+                """);
+    }
+
+    private static void welcome() {
+        System.out.println("Welcome to our university's website");
     }
 }

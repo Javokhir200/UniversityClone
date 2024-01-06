@@ -1,7 +1,7 @@
 package domain;
 
 public class Group {
-    private  int sequence = 0;
+    static int sequence = 0;
     {
         sequence++;
     }
@@ -18,7 +18,7 @@ public class Group {
         return groupId;
     }
 
-    public int getFacultyId() {
+    public Integer getFacultyId() {
         return facultyId;
     }
 

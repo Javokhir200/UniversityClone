@@ -1,7 +1,7 @@
 package domain;
 
 public class Faculty {
-    private int sequence =0;
+    static int sequence =0;
     {
         sequence++;
     }

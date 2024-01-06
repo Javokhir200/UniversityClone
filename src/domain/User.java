@@ -5,7 +5,7 @@ import enums.UserStatusEnum;
 import java.util.List;
 
 public class User {
-    int sequence = 0;
+    static int sequence = 0;
     {
         sequence++;
     }
@@ -15,13 +15,28 @@ public class User {
     private String username;
     private String localPassword;
     private int groupId;
-    private UserStatusEnum status;
+    private int facultyId;
 
-    public User(String fullName, String email, String username, UserStatusEnum status) {
+    public User(String fullName, String email, String username, String localPassword, UserStatusEnum status) {
         this.fullName = fullName;
         this.email = email;
+        this.username = username;
+        this.localPassword = localPassword;
         this.status = status;
-    }//user faqat guest bo'lib qo'shiladi rektor set qiladi teacher or student ekanini
+    }
+    public User(String fullName, String email, String username,Integer groupId,Integer facultyId, String localPassword, UserStatusEnum status) {
+        this.fullName = fullName;
+        this.email = email;
+        this.username = username;
+        this.localPassword = localPassword;
+        this.status = status;
+        this.groupId = groupId;
+        this.facultyId = facultyId;
+    }
+
+    private UserStatusEnum status;
+
+
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -45,6 +60,14 @@ public class User {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public int getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(int facultyId) {
+        this.facultyId = facultyId;
     }
 
     public UserStatusEnum getStatus() {
@@ -81,14 +104,26 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + localPassword + '\'' +
-                ", groupId=" + groupId +
-                ", status=" + status +
-                '}';
+        if (status.equals(UserStatusEnum.STUDENT)){
+            return "User{" +
+                    "userId=" + userId +
+                    ", fullName='" + fullName + '\'' +
+                    ", email='" + email + '\'' +
+                    ", username='" + username + '\'' +
+                    ", password='" + localPassword + '\'' +
+                    ", groupId=" + groupId +
+                    ", facultyId=" + facultyId +
+                    ", status=" + status +
+                    '}';
+        }else{
+            return "User{" +
+                    "userId=" + userId +
+                    ", fullName='" + fullName + '\'' +
+                    ", email='" + email + '\'' +
+                    ", username='" + username + '\'' +
+                    ", password='" + localPassword + '\'' +
+                    ", status=" + status +
+                    '}';
+        }
     }
 }

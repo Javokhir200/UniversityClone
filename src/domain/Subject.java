@@ -1,7 +1,7 @@
 package domain;
 
 public class Subject {
-    private int counter = 0;
+    static int counter = 0;
     {
         counter++;
     }
