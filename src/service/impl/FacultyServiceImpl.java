@@ -15,7 +15,6 @@ public class FacultyServiceImpl implements FacultyService {
                 return faculty.getFacultyName() + " is already exist !!!";
             }
         }
-        System.out.printf("temp");
         FACULTIES.add(faculty);
         return faculty.getFacultyName() + " is added successfully !!!";
     }
